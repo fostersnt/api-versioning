@@ -13,4 +13,5 @@ Route::controller(ProductController::class)
 ->group(function(){
     Route::get('/', 'getProducts');
     Route::get('/{product_id}', 'getProduct');
+    Route::post('delete/{product_id}', 'delete');
 });
