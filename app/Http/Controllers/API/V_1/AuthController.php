@@ -37,13 +37,25 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return General::api_failure_response(null, $validator->errors()->first());
         } else {
+            $company_check = ApiUser::query()->where('company_name', $request->company_name)->count();
+            $email_check = ApiUser::query()->where('email', $request->email)->count();
+
+            if ($company_check > 0) {
+                return General::api_failure_response(null, "Company '$request->company_name'ss already exists");
+            }
+            if ($email_check > 0) {
+                return General::api_failure_response(null, "A user with '$request->email' already exists");
+            }
+
             $api_user = ApiUser::query()->create([
                 'company_name' => $request->company_name,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
             ]);
 
-            return General::api_success_response($api_user, 'Registration successful');
+            $response = General::api_success_response($api_user, 'Registration successful');
+
+            return $response;
         }
 
     }
