@@ -10,7 +10,7 @@ Route::get('products', function(){
 
 //-------------------AUTH ROUTES--------------------------------------
 Route::controller(AuthController::class)
-->prefix('auth/api-user')
+->prefix('user')
 ->group(function(){
     Route::post('register', 'register');
 });
