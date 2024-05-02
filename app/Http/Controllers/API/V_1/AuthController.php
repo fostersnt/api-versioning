@@ -6,6 +6,7 @@ use App\Helpers\General;
 use App\Http\Controllers\Controller;
 use App\Models\ApiUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -56,6 +57,29 @@ class AuthController extends Controller
             $response = General::api_success_response($api_user, 'Registration successful');
 
             return $response;
+        }
+    }
+
+    public function login(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|string'
+        ]);
+
+        if ($validator->fails()) {
+            return General::api_failure_response(null, $validator->errors()->first());
+        } else {
+            $token = Auth::guard('api_user')->attempt($request->all());
+            if ($token) {
+                $data = [
+                    'token' => 'This is your token',
+                    'expired_at' => 20,
+                ];
+                return General::api_success_response($data, 'Login successful');
+            } else {
+                return General::api_failure_response(null, 'Failed to authenticate');
+            }
         }
 
     }

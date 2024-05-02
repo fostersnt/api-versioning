@@ -13,6 +13,7 @@ Route::controller(AuthController::class)
 ->prefix('user')
 ->group(function(){
     Route::post('register', 'register');
+    Route::post('login', 'login');
 });
 
 //-------------------PRODUCT ROUTES--------------------------------------

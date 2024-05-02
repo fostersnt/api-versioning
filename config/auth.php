@@ -71,7 +71,7 @@ return [
         ],
 
         'api_users' => [
-            'driver' => 'database',
+            'driver' => 'eloquent',
             'model' => App\Models\ApiUser::class,
         ],
     ],
